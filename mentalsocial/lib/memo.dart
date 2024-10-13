@@ -8,21 +8,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // Removes the debug banner
-      home: HomeScreen(),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomePage(),
     );
   }
 }
 
-class HomeScreen extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  // Function to handle navigation item taps
+  static List<Widget> _widgetOptions = <Widget>[
+    PlaceholderWidget('Chat'),
+    PlaceholderWidget('Space'),
+    PlaceholderWidget('Memo'),
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -32,49 +39,70 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 8.0), // Add padding for spacing
-                itemCount: 6, // Number of list items
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: Container(
-                      height: 60, // Height for each item in the list
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(10),
+      body: Stack(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  children: List.generate(6, (index) {
+                    return Expanded(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 2.0),
+                        color: Colors.grey.shade300,
                       ),
-                    ),
-                  );
-                },
+                    );
+                  }),
+                ),
               ),
+            ],
+          ),
+          Positioned(
+            right: 16.0,
+            bottom: 90.0, // Slightly above the bottom navigation bar
+            child: FloatingActionButton(
+              onPressed: () {
+                // Add action for the floating action button here
+              },
+              child: Icon(Icons.note_add),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: [
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.chat_bubble_outline),
             label: 'Chat',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.remove_circle_outline),
+            icon: Icon(Icons.explore_outlined),
             label: 'Space',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.edit_outlined),
+            icon: Icon(Icons.edit_note),
             label: 'Memo',
           ),
         ],
-        type: BottomNavigationBarType.fixed, // Ensures all items are displayed
-        selectedItemColor: Colors.black, // Color of the selected item
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class PlaceholderWidget extends StatelessWidget {
+  final String text;
+
+  PlaceholderWidget(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
       ),
     );
   }
