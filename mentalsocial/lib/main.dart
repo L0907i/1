@@ -1,75 +1,90 @@
 import 'package:flutter/material.dart';
+import 'chat.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MainPage(),
+      title: 'Post Something App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
     );
   }
 }
 
-class MainPage extends StatelessWidget {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
+        backgroundColor: Colors.white,
         actions: [
           IconButton(
-            icon: Icon(Icons.wb_sunny_outlined, color: Colors.black), // Sun icon
+            icon: Icon(Icons.wb_sunny_outlined),
             onPressed: () {
-              // Add functionality here for theme change or settings
+              // Logic for light/dark mode toggle
             },
+            color: Colors.black,
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: 5, // Adjust based on dynamic content
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Container(
-                    color: Colors.grey[300], // Light grey for the rows
-                    child: ListTile(
-                      leading: Icon(Icons.favorite_border), // Heart icon
-                      trailing: Icon(Icons.edit), // Pencil icon
-                      onTap: () {
-                        // Handle item tap
-                      },
-                    ),
-                  ),
-                );
-              },
+      body: Center(
+        child: Text(
+          "Let's Post Something!!!",
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Action for creating a post
+        },
+        child: Icon(Icons.edit_outlined),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
           ),
-        ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.chat_bubble_outline),
+                onPressed: () {
+                  // Navigate to chat
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.explore_outlined),
+                onPressed: () {
+                  // Navigate to space
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.edit_note_outlined),
+                onPressed: () {
+                  // Navigate to memo
+                },
+              ),
+            ],
+          ),
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            label: 'Chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
-            label: 'Space',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.edit_note_outlined),
-            label: 'Memo',
-          ),
-        ],
-        onTap: (index) {
-          // Handle bottom navigation bar tap
-        },
-      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 }
